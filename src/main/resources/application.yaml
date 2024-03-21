@@ -1,6 +1,23 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   application:
-    name: SpringBootWithKeyCloak
+    name: Spring security with Keycloak
+
+  ## keycloak
+  security:
+    oauth2:
+      client:
+        provider:
+          external:
+            issuer-uri: http://localhost:8080/realms/external
+
+        registration:
+          external:
+            provider: external
+            client-name: external-client
+            client-id: external-client
+            client-secret: dOG0BpNWOv8DXLEnjGVfymyDzPRSe3pj
+            scope: openid,offline_access,profile
+            authorization-grant-type: authorization_code
