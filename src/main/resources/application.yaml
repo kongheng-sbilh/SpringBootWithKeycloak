@@ -10,14 +10,17 @@ spring:
     oauth2:
       client:
         provider:
-          external:
-            issuer-uri: http://localhost:8080/realms/external
+          xxxxxx:
+            issuer-uri: http://localhost:8080/realms/sbilh
 
         registration:
-          external:
-            provider: external
-            client-name: external-client
-            client-id: external-client
-            client-secret: dOG0BpNWOv8DXLEnjGVfymyDzPRSe3pj
+          yyyyyy:
+            provider: xxxxxx
+            client-name: sbilh-client
+            client-id: sbilh-client
+            client-secret: UDb3sy3foq4zaahMoaQNk4sWQzagJxnb
             scope: openid,offline_access,profile
             authorization-grant-type: authorization_code
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/sbilh
