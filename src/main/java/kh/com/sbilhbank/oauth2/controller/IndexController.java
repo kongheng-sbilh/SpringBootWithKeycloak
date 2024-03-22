@@ -1,5 +1,8 @@
 package kh.com.sbilhbank.oauth2.controller;
 
+import kh.com.sbilhbank.oauth2.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -8,37 +11,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-
 @RestController
 @RequestMapping("/")
 public class IndexController {
 
     @GetMapping
-    public HashMap index() {
+    public ResponseEntity<User> index() {
         OAuth2User user = ((OAuth2User) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         OidcIdToken idToken = ((DefaultOidcUser) user).getIdToken();
-        return new HashMap(){{
-            put("hello", user.getAttribute("name"));
-            put("your email is", user.getAttribute("email"));
-            put("your token is", idToken.getTokenValue());
-        }};
+        return new ResponseEntity<>(User.builder()
+            .name(user.getAttribute("name"))
+            .email(user.getAttribute("email"))
+            .token(idToken.getTokenValue())
+            .build(), HttpStatus.OK);
     }
 
     @GetMapping("/unauthenticated")
-    public HashMap unauthenticatedRequests() {
-        return new HashMap(){{
-            put("this is ", "unauthenticated endpoint");
-        }};
+    public ResponseEntity<String> unauthenticatedRequests() {
+        return new ResponseEntity<>("This is unauthenticated endpoint", HttpStatus.OK);
     }
 
     @GetMapping("/products")
-    public String products() {
-        return "products";
+    public ResponseEntity<String> products() {
+        return new ResponseEntity<>("Products", HttpStatus.OK);
     }
 
     @GetMapping("/customers")
-    public String customers() {
-        return "customers";
+    public ResponseEntity<String> customers() {
+        return new ResponseEntity<>("Customers", HttpStatus.OK);
     }
 }
